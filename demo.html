@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+    <script type="text/javascript" src="bundle.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <canvas id="myCanvas"></canvas>
+    <script>
+      function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+
+      var canvas = document.getElementById('myCanvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      var context = canvas.getContext('2d');
+
+      window.initKalman();
+      canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        window.drawPrediction(context, [mousePos.x, mousePos.y], false)
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+
+        if (window.kalman) {
+          window.kalman.update([mousePos.x, mousePos.y, 0, 0])
+          var prediction = window.kalman.predict()
+          console.log("Update: ", mousePos.x, mousePos.y)
+          console.log("Prediction: ", prediction._data[0][0], prediction._data[1][0]);
+          window.drawPrediction(context, [prediction._data[0][0], prediction._data[1][0]], true);
+        }
+      }, false); 
+    </script>
+  </body>
+</html>

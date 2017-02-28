@@ -1,0 +1,9 @@
+{
+	"name": "kalman_filter_demo",
+	"version": "0.0.1",
+	"description": "kalman filter",
+	"author": "joseph munoz",
+	"scripts": {
+		"dev": "webpack -d && webpack-dev-server --progress --profile --colors --hot"
+	}
+}
